@@ -1,41 +1,24 @@
 package model;
 
-public class EventRecord {
-    private final String coreName;
-    private final String processId;
-    private final int startTime;
-    private final int endTime;
-
-    public EventRecord(String coreName, String processId, int startTime, int endTime) {
-        this.coreName = coreName;
-        this.processId = processId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
-    public String getCoreName() {
-        return coreName;
-    }
-
-    public String getProcessId() {
-        return processId;
-    }
-
-    public int getStartTime() {
-        return startTime;
-    }
-
-    public int getEndTime() {
-        return endTime;
-    }
-
+/**
+ * 記錄CPU核心執行程序片段的歷史軌跡 (Domain Event)
+ *
+ * @param coreName       執行此片段的核心名稱
+ * @param processId      被執行的程序ID
+ * @param startTime      此片段的起始時間 (TU)
+ * @param endTime        此片段的結束時間 (TU)
+ * @param executionCount 該程序被執行次數
+ */
+public record EventRecord(
+        String coreName,
+        String processId,
+        int startTime,
+        int endTime,
+        int executionCount
+) {
     @Override
     public String toString() {
-        return "EventRecord{" +
-                "coreName='" + coreName + '\'' +
-                ", processId='" + processId + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
+        return String.format("[%s] %s (#%d) : %d -> %d",
+                coreName, processId, executionCount, startTime, endTime);
     }
 }

@@ -8,6 +8,7 @@ public class Process {
     private int startTime;
     private int completionTime;
     private ProcessState state;
+    private int runCount = 0;
 
     public Process(String processId, int arrivalTime, int burstTime) {
         this.processId = processId;
@@ -17,6 +18,10 @@ public class Process {
         this.startTime = -1;
         this.completionTime = 0;
         this.state = ProcessState.NEW;
+    }
+
+    public int incrementAndGetRunCount() {
+        return ++runCount;
     }
 
     public String getProcessId() {
