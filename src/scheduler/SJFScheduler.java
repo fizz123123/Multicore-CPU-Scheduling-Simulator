@@ -11,11 +11,13 @@ public class SJFScheduler implements Scheduler {
     private final PriorityBlockingQueue<Process> readyQueue;
 
     public SJFScheduler() {
-        this.readyQueue = new PriorityBlockingQueue<>
-                (
-                        11,
-                        Comparator.comparingInt(Process::getRemainingTime)
-                );
+        this.readyQueue = new PriorityBlockingQueue<>(
+                11,
+                Comparator
+                        .comparingInt(Process::getBurstTime)
+                        .thenComparingInt(Process::getArrivalTime)
+                        .thenComparing(Process::getProcessId)
+        );
     }
 
     @Override
