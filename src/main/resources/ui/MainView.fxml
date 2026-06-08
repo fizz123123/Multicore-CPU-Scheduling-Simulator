@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ui.MainController"
+            prefWidth="1200"
+            prefHeight="800">
+
+    <!-- 上方標題區 -->
+    <top>
+        <VBox spacing="4" style="-fx-background-color: #2c3e50;">
+            <padding>
+                <Insets top="16" right="20" bottom="16" left="20"/>
+            </padding>
+
+            <Label text="CPU Scheduling Simulator"
+                   style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+            <Label text="FCFS / SJF / Round Robin - Java Concurrent Simulation"
+                   style="-fx-text-fill: #dcdde1; -fx-font-size: 13px;"/>
+        </VBox>
+    </top>
+
+    <!-- 左側設定區 -->
+    <left>
+        <ScrollPane fitToWidth="true"
+                    prefWidth="330"
+                    style="-fx-background-color: #f5f6fa;">
+            <VBox spacing="16" style="-fx-background-color: #f5f6fa;">
+                <padding>
+                    <Insets top="16" right="16" bottom="16" left="16"/>
+                </padding>
+
+                <!-- 排程演算法設定 -->
+                <TitledPane text="排程演算法設定" expanded="true">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="12" right="12" bottom="12" left="12"/>
+                        </padding>
+
+                        <Label text="選擇演算法"/>
+                        <ComboBox fx:id="algorithmComboBox"
+                                  prefWidth="260"
+                                  promptText="請選擇排程演算法"/>
+
+                        <Label text="Time Slice（RR 使用）"/>
+                        <Spinner fx:id="timeSliceSpinner"
+                                 prefWidth="260"/>
+                    </VBox>
+                </TitledPane>
+
+                <!-- CPU 與時間設定 -->
+                <TitledPane text="CPU 與時間設定" expanded="true">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="12" right="12" bottom="12" left="12"/>
+                        </padding>
+
+                        <Label text="CPU Core Count"/>
+                        <Spinner fx:id="coreCountSpinner"
+                                 prefWidth="260"/>
+
+                        <Label text="Time Multiplier（ms / TU）"/>
+                        <Spinner fx:id="timeMultiplierSpinner"
+                                 prefWidth="260"/>
+                    </VBox>
+                </TitledPane>
+
+                <!-- 程序生成模式 -->
+                <TitledPane text="程序生成模式" expanded="true">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="12" right="12" bottom="12" left="12"/>
+                        </padding>
+
+                        <RadioButton fx:id="randomModeRadio"
+                                     text="隨機模式"
+                                     selected="true">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="generationModeGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+
+                        <RadioButton fx:id="customModeRadio"
+                                     text="自訂模式"
+                                     toggleGroup="$generationModeGroup"/>
+
+                        <Separator/>
+
+                        <Label text="隨機程序數量"/>
+                        <Slider fx:id="randomProcessCountSlider"
+                                min="10"
+                                max="30"
+                                value="20"
+                                majorTickUnit="5"
+                                minorTickCount="0"
+                                showTickMarks="true"
+                                showTickLabels="true"
+                                snapToTicks="true"/>
+
+                        <Label fx:id="randomProcessCountLabel"
+                               text="目前數量：20"/>
+
+                        <Label text="Random Seed（可留空）"/>
+                        <TextField fx:id="randomSeedTextField"
+                                   promptText="例如：12345"/>
+                    </VBox>
+                </TitledPane>
+
+                <!-- 操作按鈕 -->
+                <TitledPane text="操作" expanded="true">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="12" right="12" bottom="12" left="12"/>
+                        </padding>
+
+                        <Button fx:id="startButton"
+                                text="開始模擬"
+                                prefWidth="260"
+                                onAction="#handleStartSimulation"/>
+
+                        <Button fx:id="clearButton"
+                                text="清除結果"
+                                prefWidth="260"
+                                onAction="#handleClearResult"/>
+                    </VBox>
+                </TitledPane>
+
+            </VBox>
+        </ScrollPane>
+    </left>
+
+    <!-- 中央主要內容區 -->
+    <center>
+        <VBox spacing="12">
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
+
+            <!-- 統計結果 -->
+            <HBox spacing="16">
+                <TitledPane text="平均等待時間" expanded="true" HBox.hgrow="ALWAYS">
+                    <VBox alignment="CENTER" prefHeight="80">
+                        <Label fx:id="averageWaitingTimeLabel"
+                               text="-"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                    </VBox>
+                </TitledPane>
+
+                <TitledPane text="平均周轉時間" expanded="true" HBox.hgrow="ALWAYS">
+                    <VBox alignment="CENTER" prefHeight="80">
+                        <Label fx:id="averageTurnaroundTimeLabel"
+                               text="-"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                    </VBox>
+                </TitledPane>
+
+                <TitledPane text="總模擬時間" expanded="true" HBox.hgrow="ALWAYS">
+                    <VBox alignment="CENTER" prefHeight="80">
+                        <Label fx:id="totalSimulationTimeLabel"
+                               text="-"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                    </VBox>
+                </TitledPane>
+            </HBox>
+
+            <!-- 甘特圖區 -->
+            <TitledPane text="排程甘特圖" expanded="true" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToHeight="true"
+                            fitToWidth="false"
+                            pannable="true">
+                    <Pane fx:id="ganttChartPane"
+                          minHeight="300"
+                          prefHeight="360"
+                          prefWidth="900"
+                          style="-fx-background-color: white;"/>
+                </ScrollPane>
+            </TitledPane>
+
+            <!-- 程序清單與自訂程序輸入表格 -->
+            <TitledPane text="程序清單" expanded="true">
+                <VBox spacing="8">
+                    <Label text="隨機模式會在模擬完成後顯示產生的程序；自訂模式可手動新增 / 刪除程序。"
+                           style="-fx-text-fill: #636e72;"/>
+
+                    <TableView fx:id="customProcessTable"
+                               prefHeight="180">
+                        <columns>
+                            <TableColumn fx:id="processIdColumn"
+                                         text="Process ID"
+                                         prefWidth="120"/>
+                            <TableColumn fx:id="arrivalTimeColumn"
+                                         text="Arrival Time"
+                                         prefWidth="140"/>
+                            <TableColumn fx:id="burstTimeColumn"
+                                         text="Burst Time"
+                                         prefWidth="140"/>
+                        </columns>
+                    </TableView>
+
+                    <HBox spacing="8">
+                        <Label text="Process ID：自動產生"
+                               prefWidth="140"
+                               style="-fx-text-fill: #636e72;"/>
+
+                        <TextField fx:id="arrivalTimeTextField"
+                                   promptText="Arrival Time"
+                                   prefWidth="120"/>
+
+                        <TextField fx:id="burstTimeTextField"
+                                   promptText="Burst Time"
+                                   prefWidth="120"/>
+
+                        <Button fx:id="addProcessButton"
+                                text="新增程序"
+                                onAction="#handleAddCustomProcess"/>
+
+                        <Button fx:id="removeProcessButton"
+                                text="刪除選取"
+                                onAction="#handleRemoveCustomProcess"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+
+        </VBox>
+    </center>
+
+    <!-- 下方狀態列 -->
+    <bottom>
+        <HBox style="-fx-background-color: #ecf0f1;">
+            <padding>
+                <Insets top="8" right="12" bottom="8" left="12"/>
+            </padding>
+
+            <Label fx:id="statusLabel"
+                   text="Ready"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
