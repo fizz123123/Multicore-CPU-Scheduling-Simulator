@@ -78,9 +78,9 @@ public class SimulationEngine {
         if (totalProcesses > 0) {
             double avgWT = totalWT / totalProcesses;
             double avgTAT = totalTAT / totalProcesses;
-            return new SimulationResult(eventLog, avgWT, avgTAT, totalTime);
+            return new SimulationResult(eventLog, new ArrayList<>(processes), avgWT, avgTAT, totalTime);
         }
 
-        return new SimulationResult(eventLog, 0, 0, totalTime);
+        return new SimulationResult(eventLog, new ArrayList<>(processes), 0, 0, totalTime);
     }
 }
