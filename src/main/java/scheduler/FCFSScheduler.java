@@ -3,7 +3,6 @@ package scheduler;
 import model.Process;
 import model.ProcessState;
 
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 

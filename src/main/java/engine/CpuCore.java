@@ -5,7 +5,6 @@ import model.Process;
 import model.ProcessState;
 import scheduler.Scheduler;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 
