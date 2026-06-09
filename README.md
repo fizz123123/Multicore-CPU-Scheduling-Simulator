@@ -76,7 +76,7 @@ After cloning the repository, make sure you have **JDK 21 or later** installed.
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/fizz123123/Multicore-CPU-Scheduling-Simulator.git
 cd Multicore-CPU-Scheduling-Simulator
 ```
 
