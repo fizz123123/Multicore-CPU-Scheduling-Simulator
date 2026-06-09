@@ -184,9 +184,6 @@
             <!-- 程序清單與自訂程序輸入表格 -->
             <TitledPane text="程序清單" expanded="true">
                 <VBox spacing="8">
-                    <Label text="隨機模式會在模擬完成後顯示產生的程序；自訂模式可手動新增 / 刪除程序。"
-                           style="-fx-text-fill: #636e72;"/>
-
                     <TableView fx:id="customProcessTable"
                                prefHeight="180">
                         <columns>
